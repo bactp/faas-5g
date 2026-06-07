@@ -16,7 +16,12 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from PIL import Image
 
-from cifar10_classes import CIFAR10_CLASSES
+try:
+    # Prefer relative import when running as a package (uvicorn app.main:app)
+    from .cifar10_classes import CIFAR10_CLASSES
+except Exception:
+    # Fallback for running from app/ directory (uvicorn main:app)
+    from cifar10_classes import CIFAR10_CLASSES
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)

@@ -1,3 +1,4 @@
 .DS_Store
 model/*.h5
 model/*.npz
+.venv
