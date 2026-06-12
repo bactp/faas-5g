@@ -1,0 +1,60 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: image-classifier
+  namespace: default
+  labels:
+    app: image-classifier
+    serving.knative.dev/visibility: cluster-local
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/class: "kpa.autoscaling.knative.dev"
+        autoscaling.knative.dev/metric: "concurrency"
+        autoscaling.knative.dev/target: "1"
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+        autoscaling.knative.dev/scaleDownDelay: "20s"
+        autoscaling.knative.dev/initial-scale: "1"
+    spec:
+      containerConcurrency: 1
+      timeoutSeconds: 60
+      containers:
+        - name: image-classifier
+          image: phuongbac/faas_app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http1
+              containerPort: 8080
+          env:
+            - name: MODEL_PATH
+              value: "model/cifar10_model.h5"
+            - name: NORM_PATH
+              value: "model/cifar10_model_norm.npz"
+            - name: TOP_K
+              value: "3"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+  traffic:
+    - latestRevision: true
+      percent: 100
