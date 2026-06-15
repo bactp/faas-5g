@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-domain
+  namespace: knative-serving
+  annotations:
+    config.kubernetes.io/depends-on: apps/namespaces/kourier-system/Deployment/3scale-kourier-gateway
+data:
+  # EDIT THIS: replace with the workload cluster master IP before approving
+  # e.g. for 5g-edge: "192.168.28.188.sslip.io": ""
+  192.168.28.159.sslip.io: ""

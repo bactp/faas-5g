@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: add-depends-on
+  annotations:
+    config.kubernetes.io/local-config: "true"
+data:
+  depends-on: apps/namespaces/kourier-system/Deployment/3scale-kourier-gateway
+  source: |
+    depends_on = ctx.resource_list["functionConfig"]["data"]["depends-on"]
+    for resource in ctx.resource_list["items"]:
+      meta = resource.get("metadata", {})
+      annotations = meta.get("annotations", {})
+      if annotations.get("config.kubernetes.io/local-config") == "true":
+        continue
+      annotations["config.kubernetes.io/depends-on"] = depends_on
+      meta["annotations"] = annotations
+      resource["metadata"] = meta

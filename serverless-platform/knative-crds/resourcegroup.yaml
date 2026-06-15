@@ -1,0 +1,7 @@
+apiVersion: kpt.dev/v1alpha1
+kind: ResourceGroup
+metadata:
+  name: inventory-knative-crds
+  namespace: default
+  labels:
+    cli-utils.sigs.k8s.io/inventory-id: 5392997cd95dc6969e5df47fef56b523762328cf-1781500567388614800
