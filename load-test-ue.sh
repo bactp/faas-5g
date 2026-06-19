@@ -5,7 +5,7 @@
 # This mode forces curl to use uesimtun0, so traffic goes through:
 # UE -> gNB -> UPF -> Kourier NodePort -> image-classifier
 
-IMAGE="${1:-/tmp/test_0_cat.png}"
+IMAGE="${1:-test_0_cat.png}"
 N="${2:-5}"
 
 URL="http://192.168.1.57:32481/predict"
