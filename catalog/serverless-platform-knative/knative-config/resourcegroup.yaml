@@ -1,9 +1,0 @@
-apiVersion: kpt.dev/v1alpha1
-kind: ResourceGroup
-metadata:
-  name: inventory-knative-config
-  namespace: knative-serving
-  labels:
-    cli-utils.sigs.k8s.io/inventory-id: 67f9245dd2ff3cfdfe777f4bf7e02c2494be6ba8-1781501709497313014
-  annotations:
-    config.kubernetes.io/depends-on: apps/namespaces/kourier-system/Deployment/3scale-kourier-gateway
